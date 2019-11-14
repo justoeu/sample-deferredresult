@@ -1,0 +1,16 @@
+# Server Configuration
+server:
+  undertow:
+    worker-threads: 200
+
+app:
+  thread.async:
+    corePoolSize: 20
+    maxPoolSize: 300
+    queueCapacity: 600
+
+info:
+  app:
+    name: Sample-DeferredResult-Spring
+    description: Application of Sample to use DeferredResult
+    version: 0.0.1
