@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.async.DeferredResult;
 
-import static br.com.justoeu.example.gateway.http.URLMapping.API_PING_HEALTH_CHECK;
-import static br.com.justoeu.example.gateway.http.URLMapping.ROOT_API;
+import static br.com.justoeu.example.gateway.http.URLMapping.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -26,12 +25,24 @@ public class PingHealthCheck {
     @Autowired
     private ThreadPoolTaskExecutor executor;
 
+
     @GetMapping(value = API_PING_HEALTH_CHECK, produces = APPLICATION_JSON_VALUE+";charset=UTF-8")
-    public DeferredResult<ResponseEntity<?>> ping() {
+    public ResponseEntity<String> ping() {
+
+        return new ResponseEntity("Lindo do papai", HttpStatus.OK);
+    }
+
+    @GetMapping(value = API_CHECK_HEALTH_CHECK, produces = APPLICATION_JSON_VALUE+";charset=UTF-8")
+    public DeferredResult<ResponseEntity<?>> check() {
         DeferredResult<ResponseEntity<?>> deferredResult = new DeferredResult<>();
         try {
 
-            ListenableFuture<String> task = executor.submitListenable(() -> PONG);
+            ListenableFuture<String> task = executor.submitListenable(() -> {
+                try {
+                    Thread.sleep(30000);
+                } catch (InterruptedException e){ }
+                return PONG;
+            });
 
             task.addCallback(
                     new ListenableFutureCallback<>() {

@@ -1,13 +1,18 @@
 # Server Configuration
 server:
   undertow:
-    worker-threads: 200
+    worker-threads: 20
 
 app:
   thread.async:
     corePoolSize: 20
     maxPoolSize: 300
     queueCapacity: 600
+
+spring:
+  mvc:
+    async:
+      request-timeout: -1
 
 info:
   app:
